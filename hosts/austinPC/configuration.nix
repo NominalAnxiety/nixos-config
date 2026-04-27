@@ -146,6 +146,7 @@
      git
      home-manager
      zed-editor
+     discord
   ];
 
   # Some programs need SUID wrappers, can be configured further or are
