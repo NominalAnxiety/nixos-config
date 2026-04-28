@@ -52,6 +52,7 @@
 
   # Enable the KDE Plasma Desktop Environment.
   services.displayManager.sddm.enable = true;
+  services.displayManager.sddm.wayland.enable = true;
   services.desktopManager.plasma6.enable = true;
 
   # Enable CUPS to print documents.
@@ -147,6 +148,7 @@
      home-manager
      zed-editor
      discord
+     yazi
   ];
 
   # Some programs need SUID wrappers, can be configured further or are
