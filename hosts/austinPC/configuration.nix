@@ -133,6 +133,7 @@
      discord
      yazi
      unzip
+     vicinae
   ];
 
   # NVIDIA
