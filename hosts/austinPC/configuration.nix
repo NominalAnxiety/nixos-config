@@ -134,6 +134,7 @@
      zed-editor
      discord
      yazi
+     unzip
   ];
 
   # NVIDIA
