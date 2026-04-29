@@ -93,7 +93,7 @@
     extraGroups = [ "networkmanager" "wheel" ];
     packages = with pkgs; [
       kdePackages.kate
-    #  thunderbird
+      mailspring
     ];
     shell = pkgs.zsh;
     openssh.authorizedKeys.keys = [
