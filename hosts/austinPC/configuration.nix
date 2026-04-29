@@ -8,11 +8,17 @@
   imports =
     [ # Include the results of the hardware scan.
       ./hardware-configuration.nix
+      ../../modules/themeing/stylix.nix
     ];
 
   # Bootloader.
-  boot.loader.systemd-boot.enable = true;
-  boot.loader.efi.canTouchEfiVariables = true;
+  boot.loader.efi.canTouchEfiVariables = false;
+  boot.loader.efi.efiSysMountPoint = "/boot";
+  boot.loader.grub.enable = true;
+  boot.loader.grub.devices = [ "nodev" ];
+  boot.loader.grub.efiSupport = true;
+  boot.loader.grub.efiInstallAsRemovable = true;
+  boot.loader.grub.useOSProber = true;
 
   # Use latest kernel.
   boot.kernelPackages = pkgs.linuxPackages_latest;
@@ -30,7 +36,7 @@
   networking.networkmanager.enable = true;
 
   # Enable bluetooth
-  hardware.bluetooth.enable = true;
+  hardware.bluetooth.enable = true; # added
 
   # Set your time zone.
   time.timeZone = "America/Los_Angeles";
@@ -49,6 +55,7 @@
     LC_TELEPHONE = "en_US.UTF-8";
     LC_TIME = "en_US.UTF-8";
   };
+
 
   # Enable the KDE Plasma Desktop Environment.
   services.displayManager.sddm.enable = true;
@@ -73,6 +80,7 @@
     # no need to redefine it in your config for now)
     #media-session.enable = true;
   };
+  security.polkit.enable = true;
 
   # Enable touchpad support (enabled default in most desktopManager).
   # services.xserver.libinput.enable = true;
@@ -93,29 +101,6 @@
     ];
   };
   
-  # Setup nvidia
-  hardware.graphics = {
-    enable = true;
-  };
-  
-  # Load nvidia driver for Xorg and Wayland
-  services.xserver.videoDrivers = [ "nvidia" ];
-   
-  # https://nixos.wiki/wiki/Nvidia 
-  hardware.nvidia = {
-    modesetting.enable = true;
-    
-    # Nvidia power management is expiremental (can cause sleep/suspend to fail.)
-    powerManagement.enable = false;
-
-    powerManagement.finegrained = false;
-    
-    nvidiaSettings = true;
-
-    open = false; # I might set this to true
-    
-    package = config.boot.kernelPackages.nvidiaPackages.stable;
-  };
   
   # this came from misterio77 nix starter configs minimal (the services.openssh)
   # This setups a SSH server. Very important if you're setting up a headless system.
@@ -150,6 +135,26 @@
      discord
      yazi
   ];
+
+  # NVIDIA
+  hardware.nvidia = {
+    open = true;
+    modesetting.enable = true;
+    powerManagement.enable = true;
+    package = config.boot.kernelPackages.nvidiaPackages.beta;
+    nvidiaSettings = true;
+  };
+  hardware.graphics.enable = true;
+  services.xserver.videoDrivers = [ "nvidia" ];
+  services.xserver.enable = true; # I don't know if I need this
+
+
+  # SYSTEM ENV VARS
+  environment.sessionVariables = {
+    LIBVA_DRIVER_NAME = "nvidia";
+    __GLX_VENDOR_LIBRARY_NAME = "nvidia";
+    NIXOS_OZONE_WL = "1";
+  };
 
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.
