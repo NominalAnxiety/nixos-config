@@ -7,9 +7,13 @@
       url = "github:nix-community/stylix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    better-blur = {
+      url = "github:xarblu/kwin-effects-better-blur-dx";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
-  outputs = { self, nixpkgs, stylix, ... }@inputs: 
+  outputs = { self, nixpkgs, stylix, better-blur, ... }@inputs: 
   let 
     system = "x86_64-linux";
     pkgs = import nixpkgs {

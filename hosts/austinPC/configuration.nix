@@ -2,7 +2,7 @@
 # your system.  Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running ‘nixos-help’).
 
-{ config, pkgs, ... }:
+{ inputs, config, pkgs, ... }:
 
 {
   imports =
@@ -82,6 +82,9 @@
   };
   security.polkit.enable = true;
 
+  # Install firefox
+  programs.firefox.enable = true;
+
   # Enable touchpad support (enabled default in most desktopManager).
   # services.xserver.libinput.enable = true;
   programs.zsh.enable = true;
@@ -114,9 +117,6 @@
     };
   };
 
-  # Install firefox.
-  programs.firefox.enable = true;
-
   # Allow unfree packages
   nixpkgs.config.allowUnfree = true;
 
@@ -132,7 +132,9 @@
      zed-editor
      yazi
      unzip
-     vicinae
+     cmatrix
+     inputs.better-blur.packages.${pkgs.system}.default
+     btop
   ];
 
   # NVIDIA
