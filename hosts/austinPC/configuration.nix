@@ -130,7 +130,6 @@
      git
      home-manager
      zed-editor
-     discord
      yazi
      unzip
      vicinae
