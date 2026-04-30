@@ -25,7 +25,7 @@
   in {
     # NixOS configuration entrypoint
     nixosConfigurations = {
-      austinPC = nixpkgs.lib.nixosSystem {
+      PC = nixpkgs.lib.nixosSystem {
         specialArgs = { inherit inputs system; };
         # > Our main nixos configuration file <
         modules = [
