@@ -23,7 +23,7 @@
   # Use latest kernel.
   boot.kernelPackages = pkgs.linuxPackages_latest;
 
-  networking.hostName = "austinPC"; # Define your hostname.
+  networking.hostName = "PC"; # Define your hostname.
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
 
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
@@ -135,6 +135,8 @@
      cmatrix
      inputs.better-blur.packages.${pkgs.system}.default
      btop
+     fastfetch
+     wl-clipboard
   ];
 
   # NVIDIA

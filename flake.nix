@@ -29,7 +29,7 @@
         specialArgs = { inherit inputs system; };
         # > Our main nixos configuration file <
         modules = [
-          ./hosts/austinPC/configuration.nix
+          ./hosts/PC/configuration.nix
           stylix.nixosModules.stylix
         ];
       };
