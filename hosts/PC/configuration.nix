@@ -2,15 +2,20 @@
 # your system.  Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running ‘nixos-help’).
 
-{ inputs, config, pkgs, ... }:
+{
+  inputs,
+  config,
+  pkgs,
+  ...
+}:
 
 {
-  imports =
-    [ # Include the results of the hardware scan.
-      ./hardware-configuration.nix
-      ../../modules/themeing/stylix.nix
-      ../../modules/gaming.nix
-    ];
+  imports = [
+    # Include the results of the hardware scan.
+    ./hardware-configuration.nix
+    ../../modules/themeing/stylix.nix
+    ../../modules/gaming.nix
+  ];
 
   # Bootloader.
   boot.loader.efi.canTouchEfiVariables = false;
@@ -27,7 +32,10 @@
   networking.hostName = "PC"; # Define your hostname.
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
 
-  nix.settings.experimental-features = [ "nix-command" "flakes" ];
+  nix.settings.experimental-features = [
+    "nix-command"
+    "flakes"
+  ];
 
   # Configure network proxy if necessary
   # networking.proxy.default = "http://user:password@proxy:port/";
@@ -57,10 +65,21 @@
     LC_TIME = "en_US.UTF-8";
   };
 
-
   # Enable the KDE Plasma Desktop Environment.
-  services.displayManager.sddm.enable = true;
-  services.displayManager.sddm.wayland.enable = true;
+  services.displayManager = {
+    sddm = {
+      enable = true;
+      wayland.enable = true;
+	  settings = {
+	    Theme = {
+		  Current = "pixel-munchlax";
+		  ThemeDir = "../../modules/themeing/themes";
+		};
+	  };
+    };
+    defaultSession = "plasma";
+
+  };
   services.desktopManager.plasma6.enable = true;
 
   # Enable CUPS to print documents.
@@ -94,7 +113,10 @@
   users.users.austinb = {
     isNormalUser = true;
     description = "Austin Bowman";
-    extraGroups = [ "networkmanager" "wheel" ];
+    extraGroups = [
+      "networkmanager"
+      "wheel"
+    ];
     packages = with pkgs; [
       kdePackages.kate
       mailspring
@@ -104,8 +126,7 @@
       "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIOvNuLTk7y3BFUDtnOZiG4M1eia+fW9Za6recHQ8dMtU astrangbow2@gmail.com"
     ];
   };
-  
-  
+
   # this came from misterio77 nix starter configs minimal (the services.openssh)
   # This setups a SSH server. Very important if you're setting up a headless system.
   # Feel free to remove if you don't need it.
@@ -124,20 +145,21 @@
   # List packages installed in system profile. To search, run:
   # $ nix search wget
   environment.systemPackages = with pkgs; [
-     vim # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
-     ghostty
-     neovim
-     wget
-     git
-     home-manager
-     zed-editor
-     yazi
-     unzip
-     cmatrix
-     inputs.better-blur.packages.${pkgs.system}.default
-     btop
-     fastfetch
-     wl-clipboard
+    vim # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
+    ghostty
+    neovim
+    wget
+    git
+    home-manager
+    zed-editor
+    yazi
+    unzip
+    cmatrix
+    inputs.better-blur.packages.${pkgs.system}.default
+    btop
+    fastfetch
+    wl-clipboard
+	kdePackages.sddm-kcm
   ];
 
   # NVIDIA
@@ -151,7 +173,6 @@
   hardware.graphics.enable = true;
   services.xserver.videoDrivers = [ "nvidia" ];
   services.xserver.enable = true; # I don't know if I need this
-
 
   # SYSTEM ENV VARS
   environment.sessionVariables = {
