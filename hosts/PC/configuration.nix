@@ -14,6 +14,7 @@
     # Include the results of the hardware scan.
     ./hardware-configuration.nix
     ../../modules/themeing/stylix.nix
+	../../modules/themeing/theme.nix
     ../../modules/gaming.nix
   ];
 
@@ -70,12 +71,7 @@
     sddm = {
       enable = true;
       wayland.enable = true;
-	  settings = {
-	    Theme = {
-		  Current = "pixel-munchlax";
-		  ThemeDir = "../../modules/themeing/themes";
-		};
-	  };
+	  theme = "pixel-munchlax";
     };
     defaultSession = "plasma";
 
