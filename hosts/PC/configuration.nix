@@ -9,12 +9,28 @@
   ...
 }:
 
+# github url https://github.com/Darkkal44/qylock/tree/main/themes
+let
+  login_screen_name = "pixel-hollowknight";
+  sddm-theme = pkgs.stdenvNoCC.mkDerivation {
+    name = "sddm-theme-qylock";
+    src = pkgs.fetchFromGitHub {
+      owner = "Darkkal44";
+      repo = "qylock";
+      rev = "main";
+      sha256 = "sha256-8FTTxdTlvaxHXlEZ4AOMq48Q23dqJa0+83TzBKcZer0=";
+    };
+    installPhase = ''
+      mkdir -p $out/share/sddm/themes/${login_screen_name}
+      cp -r themes/${login_screen_name}/. $out/share/sddm/themes/${login_screen_name}
+    '';
+  };
+in
 {
   imports = [
     # Include the results of the hardware scan.
     ./hardware-configuration.nix
     ../../modules/themeing/stylix.nix
-	../../modules/themeing/theme.nix
     ../../modules/gaming.nix
   ];
 
@@ -67,14 +83,16 @@
   };
 
   # Enable the KDE Plasma Desktop Environment.
-  services.displayManager = {
-    sddm = {
-      enable = true;
-      wayland.enable = true;
-	  theme = "pixel-munchlax";
+  # sddm is enabled in sddm.nix
+  services.displayManager.sddm = {
+    enable = true;
+    theme = "${login_screen_name}";
+    extraPackages = [ sddm-theme ];
+    settings = {
+      Theme = {
+        Current = "${login_screen_name}";
+      };
     };
-    defaultSession = "plasma";
-
   };
   services.desktopManager.plasma6.enable = true;
 
@@ -129,10 +147,18 @@
   services.openssh = {
     enable = true;
     settings = {
-      PermitRootLogin = "no";
+      # PermitRootLogin = "no";
       KbdInteractiveAuthentication = false;
       PasswordAuthentication = false;
     };
+  };
+  services.ssh = {
+    startAgent = true;
+	enableAskPassword = true;
+  };
+  # kde specific settings
+  environment.variables = {
+    SSH_ASKPASS_REQUIRE = "prefer";
   };
 
   # Allow unfree packages
@@ -155,7 +181,14 @@
     btop
     fastfetch
     wl-clipboard
-	kdePackages.sddm-kcm
+    sddm-theme
+    # all kde packages
+    kdePackages.sddm-kcm
+    kdePackages.qtmultimedia
+    kdePackages.qtdeclarative
+    kdePackages.qt5compat # provides Qt5-era GraphicalEffects ported to Qt6
+    kdePackages.qtsvg
+
   ];
 
   # NVIDIA
