@@ -152,7 +152,8 @@ in
       PasswordAuthentication = false;
     };
   };
-  services.ssh = {
+  # this could potentially be in home-manager
+  programs.ssh = {
     startAgent = true;
 	enableAskPassword = true;
   };
