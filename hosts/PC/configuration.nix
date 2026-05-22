@@ -2,10 +2,13 @@
 # your system.  Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running ‘nixos-help’).
 
+# system has been replaced with stdenv.hostPlatform.system 
+
 {
   inputs,
   config,
   pkgs,
+  stdenv,
   ...
 }:
 
@@ -178,7 +181,7 @@ in
     yazi
     unzip
     cmatrix
-    inputs.better-blur.packages.${pkgs.system}.default
+    inputs.better-blur.packages.${pkgs.stdenv.hostPlatform.system}.default
     btop
     fastfetch
     wl-clipboard
